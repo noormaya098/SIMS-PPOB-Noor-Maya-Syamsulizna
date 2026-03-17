@@ -11,9 +11,9 @@ import BannersSection from '../components/BannersSection';
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { 
-    profile, balance, services, banners, 
-    loadingProfile, loadingBalance, loadingServices, loadingBanners 
+  const {
+    profile, balance, services, banners,
+    loadingProfile, loadingBalance, loadingServices, loadingBanners
   } = useSelector((state) => state.home);
   const { token } = useSelector((state) => state.auth);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -23,7 +23,7 @@ const Home = () => {
       navigate('/login');
       return;
     }
-    
+
     // Fetch all data
     dispatch(fetchProfile());
     dispatch(fetchBalance());
@@ -48,11 +48,11 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-full bg-white pb-15">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 mt-8">
-        
+
         {/* TOP SECTION: PROFILE & BALANCE */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
           <ProfileSection profile={profile} loadingProfile={loadingProfile} />
