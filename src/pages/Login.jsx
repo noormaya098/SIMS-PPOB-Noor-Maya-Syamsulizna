@@ -18,13 +18,13 @@ const Login = () => {
 
   const [formErrors, setFormErrors] = useState({});
   const [isRedirecting, setIsRedirecting] = useState(false);
-  
+
   const [showResult, setShowResult] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [resultText, setResultText] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Auto redirect if already logged in
+  // AUTO KE HALAMAN HOME APABILA SUDAH LOGIN
   useEffect(() => {
     if (token && !isRedirecting) {
       navigate('/home');
@@ -41,17 +41,17 @@ const Login = () => {
         dispatch(resetState());
         setShowResult(false);
         setIsLoggingIn(true);
-        
+
         setTimeout(() => {
           navigate('/home');
         }, 1200);
       }, 1500);
     }
     if (error) {
-       setIsSuccess(false);
-       setResultText(error || 'Login Gagal');
-       setShowResult(true);
-       dispatch(resetState());
+      setIsSuccess(false);
+      setResultText(error || 'Login Gagal');
+      setShowResult(true);
+      dispatch(resetState());
     }
   }, [success, error, dispatch, navigate]);
 
@@ -63,6 +63,7 @@ const Login = () => {
     }
   };
 
+  // VALIDASI UNTUK FORM INPUTAN KETIKA LOGIN 
   const validate = () => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -89,7 +90,7 @@ const Login = () => {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen lg:h-screen w-full bg-white font-sans text-[#000000] overflow-hidden relative">
-      {/* Left Form Section */}
+      {/* BAGIAN KIRI: FORM LOGIN */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 shrink-0 relative">
         <div className="w-full max-w-md xl:max-w-[420px] flex flex-col h-full py-10 lg:py-16">
           <div className="flex-grow flex flex-col justify-center">
@@ -139,7 +140,7 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Right Image Section */}
+      {/* BAGIAN KANAN: GAMBAR ILUSTRASI */}
       <div className="w-full lg:w-1/2 h-screen hidden md:flex items-center justify-center bg-[#fff1f0]">
         <img
           src="/assets/IllustrasiLogin.png"
@@ -148,16 +149,16 @@ const Login = () => {
         />
       </div>
 
-      {/* RESULT MODAL */}
+      {/* NOTIFIKASI MODAL */}
       {showResult && (
-        <NotificationModal 
-          isSuccess={isSuccess} 
-          message={resultText} 
-          onClose={() => setShowResult(false)} 
+        <NotificationModal
+          isSuccess={isSuccess}
+          message={resultText}
+          onClose={() => setShowResult(false)}
           buttonText="Tutup"
         />
       )}
-      {/* LOADING OVERLAY FOR LOGIN */}
+      {/* LOADING OVERLAY UNTUK LOGIN */}
       {isLoggingIn && (
         <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm animate-fade-in">
           <div className="w-12 h-12 border-4 border-gray-200 border-t-[#f42619] rounded-full animate-spin mb-4"></div>

@@ -11,13 +11,14 @@ import { Wallet, Banknote } from 'lucide-react';
 const QUICK_AMOUNTS = [10000, 20000, 50000, 100000, 250000, 500000];
 
 const TopUp = () => {
+  // callback ketika ada update terbaru dari api 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { profile, balance, loadingProfile, loadingBalance, loadingTopUp } = useSelector((state) => state.home);
   const { token } = useSelector((state) => state.auth);
 
   const [amount, setAmount] = useState('');
-  
+
   // Modal states
   const [showConfirm, setShowConfirm] = useState(false);
   const [showResult, setShowResult] = useState(false);
@@ -55,7 +56,7 @@ const TopUp = () => {
 
   const executeTopUp = async () => {
     setShowConfirm(false);
-    
+
     // Call API
     const resultAction = await dispatch(postTopUp(amount));
     if (postTopUp.fulfilled.match(resultAction)) {
@@ -78,8 +79,8 @@ const TopUp = () => {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 mt-8">
-        
-        {/* TOP SECTION: PROFILE & BALANCE */}
+
+        {/* BAGIAN ATAS: PROFILE & SALDO */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
           <ProfileSection profile={profile} loadingProfile={loadingProfile} />
           <BalanceSection balance={balance} loadingBalance={loadingBalance} />
@@ -91,7 +92,7 @@ const TopUp = () => {
           <h1 className="text-2xl font-bold text-gray-800 mb-8">Nominal Top Up</h1>
 
           <div className="flex flex-col md:flex-row gap-6">
-            
+
             {/* Input & Submit */}
             <div className="flex-1 flex flex-col gap-4">
               <div className="relative">
@@ -110,9 +111,8 @@ const TopUp = () => {
               <button
                 onClick={handleTopUpClick}
                 disabled={!isValidAmount || loadingTopUp}
-                className={`w-full py-3 rounded font-medium text-white transition-colors duration-200 mt-2 ${
-                  !isValidAmount || loadingTopUp ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#f42619] hover:bg-red-600'
-                }`}
+                className={`w-full py-3 rounded font-medium text-white transition-colors duration-200 mt-2 ${!isValidAmount || loadingTopUp ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#f42619] hover:bg-red-600'
+                  }`}
               >
                 {loadingTopUp ? 'Memproses...' : 'Top Up'}
               </button>
@@ -136,17 +136,17 @@ const TopUp = () => {
         </div>
       </main>
 
-      {/* CONFIRMATION MODAL */}
+      {/* MODAL KONFIRMASI */}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 animate-fade-in">
           <div className="bg-white rounded-lg p-8 w-full max-w-sm flex flex-col items-center shadow-xl animate-pop-in">
             <div className="w-16 h-16 bg-[#f42619] text-white rounded-full flex items-center justify-center mb-6">
               <Wallet size={32} />
             </div>
-            
+
             <p className="text-gray-600 mb-2">Anda yakin untuk Top Up sebesar</p>
             <p className="text-xl font-bold mb-6">Rp{amount.toLocaleString('id-ID')} ?</p>
-            
+
             <button
               onClick={executeTopUp}
               className="w-full py-2.5 rounded text-[#f42619] font-medium hover:bg-red-50 mb-2 transition-colors"
@@ -163,13 +163,13 @@ const TopUp = () => {
         </div>
       )}
 
-      {/* RESULT MODAL */}
+      {/* MODAL HASIL ATAU MODAL RESPONSE */}
       {showResult && (
-        <NotificationModal 
-          isSuccess={isSuccess} 
-          message="Top Up sebesar" 
-          amount={amount.toLocaleString('id-ID')} 
-          onClose={closeResult} 
+        <NotificationModal
+          isSuccess={isSuccess}
+          message="Top Up sebesar"
+          amount={amount.toLocaleString('id-ID')}
+          onClose={closeResult}
         />
       )}
 

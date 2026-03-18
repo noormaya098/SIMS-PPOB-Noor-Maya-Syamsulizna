@@ -48,6 +48,7 @@ const Registration = () => {
     }
   };
 
+  // VALIDASI FORM INPUT UNTUK REGISTRASI
   const validate = () => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -82,7 +83,7 @@ const Registration = () => {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen lg:h-screen w-full bg-white font-sans text-[#000000] overflow-y-auto lg:overflow-hidden">
-      {/* Left Form Section */}
+      {/* BAGIAN KIRI: FORM REGISTRASI */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 shrink-0">
         <div className="w-full max-w-md xl:max-w-[420px]">
           <div className="flex justify-center items-center gap-2 mb-6 lg:mb-8">
@@ -157,7 +158,7 @@ const Registration = () => {
         </div>
       </div>
 
-      {/* Right Image Section */}
+      {/* BAGIAN KANAN: GAMBAR ILUSTRASI */}
       <div className="w-full lg:w-1/2 h-screen hidden md:flex items-center justify-center bg-[#fff1f0]">
         <img
           src="/assets/IllustrasiLogin.png"
@@ -166,12 +167,12 @@ const Registration = () => {
         />
       </div>
 
-      {/* RESULT MODAL */}
+      {/* MODAL NOTIFIKASI ATAU MODAL HASIL RESPONSE */}
       {showResult && (
-        <NotificationModal 
-          isSuccess={isSuccess} 
-          message={resultText} 
-          onClose={() => setShowResult(false)} 
+        <NotificationModal
+          isSuccess={isSuccess}
+          message={resultText}
+          onClose={() => setShowResult(false)}
           buttonText="Tutup"
         />
       )}

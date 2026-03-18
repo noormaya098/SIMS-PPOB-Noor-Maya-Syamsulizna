@@ -11,9 +11,9 @@ const Akun = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  
+
   const { profile, loadingProfile } = useSelector((state) => state.home);
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -49,12 +49,12 @@ const Akun = () => {
   const confirmLogout = () => {
     setShowLogoutConfirm(false);
     setIsLoggingOut(true);
-    
-    // Simulasikan delay sebentar agar user melihat loading
+
+    // Simulasi delay untuk loading ketika masuk ke halaman login
     setTimeout(() => {
       dispatch({ type: 'auth/logout' });
       navigate('/login', { replace: true });
-    }, 1500); 
+    }, 1500);
   };
 
   const handleSaveProfile = async () => {
@@ -64,7 +64,7 @@ const Akun = () => {
       setShowResult(true);
       return;
     }
-    
+
     try {
       await dispatch(updateProfile({
         first_name: formData.first_name,
@@ -74,7 +74,7 @@ const Akun = () => {
       setIsSuccess(true);
       setResultText('Update Profile');
       setShowResult(true);
-      dispatch(fetchProfile()); // Refresh profile to be safe
+      dispatch(fetchProfile()); // Untuk refresh data profile
     } catch (error) {
       setIsSuccess(false);
       setResultText(error || 'Update Profile');
@@ -92,19 +92,19 @@ const Akun = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check size limit (100 kb)
+    // Cek limit data size ( 100kb )
     if (file.size > 100 * 1024) {
       setIsSuccess(false);
       setResultText('Maksimum 100 kb');
       setShowResult(true);
-      // Clear input
+      // Untuk clear input 
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
     const payload = new FormData();
     payload.append('file', file);
-    
+
     try {
       await dispatch(updateProfileImage(payload)).unwrap();
       setIsSuccess(true);
@@ -116,7 +116,7 @@ const Akun = () => {
       setResultText(error || 'Format Image tidak sesuai');
       setShowResult(true);
     } finally {
-      // Clear input
+      // Untuk clear input 
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
@@ -125,23 +125,23 @@ const Akun = () => {
     if (profile?.profile_image && !profile.profile_image.includes('null')) {
       return profile.profile_image;
     }
-    return '/assets/ProfilePhoto.png'; // Fallback image
+    return '/assets/ProfilePhoto.png'; // Fallback image, ketika belum ada fotonya maka menggunakan foto default yang ada pada assets 
   };
 
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      
+
       <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col items-center">
-        {/* Profile Picture Section */}
+        {/* PROFILE SECTION */}
         <div className="relative mb-4 cursor-pointer" onClick={handleImageClick}>
           <div className="w-28 h-28 rounded-full border border-gray-200 overflow-hidden flex items-center justify-center bg-gray-50">
-            <img 
-              src={getProfileImage()} 
-              alt="Profile" 
+            <img
+              src={getProfileImage()}
+              alt="Profile"
               className="w-full h-full object-cover"
               onError={(e) => {
-                e.target.onerror = null; 
+                e.target.onerror = null;
                 e.target.src = '/assets/ProfilePhoto.png';
               }}
             />
@@ -151,24 +151,24 @@ const Akun = () => {
               <Pencil size={14} />
             </div>
           )}
-          <input 
-            type="file" 
-            ref={fileInputRef} 
-            onChange={handleImageChange} 
-            accept="image/jpeg, image/png" 
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageChange}
+            accept="image/jpeg, image/png"
             className="hidden"
           />
         </div>
-        
+
         <h1 className="text-2xl font-bold text-[#333333] mb-10">
           {profile ? `${profile.first_name} ${profile.last_name}` : 'Loading...'}
         </h1>
-        
-        {/* Form Fields */}
+
+        {/* FORM FIELDS */}
         <div className="w-full max-w-xl">
           <div className="mb-6">
             <label className="block text-sm font-semibold text-[#333333] mb-2">Email</label>
-            <Input 
+            <Input
               icon={AtSign}
               name="email"
               value={formData.email}
@@ -178,10 +178,10 @@ const Akun = () => {
               className="bg-white text-gray-800"
             />
           </div>
-          
+
           <div className="mb-6">
             <label className="block text-sm font-semibold text-[#333333] mb-2">Nama Depan</label>
-            <Input 
+            <Input
               icon={User}
               name="first_name"
               value={formData.first_name}
@@ -191,10 +191,10 @@ const Akun = () => {
               className={!isEditing ? "bg-white text-gray-800" : "bg-white"}
             />
           </div>
-          
+
           <div className="mb-8">
             <label className="block text-sm font-semibold text-[#333333] mb-2">Nama Belakang</label>
-            <Input 
+            <Input
               icon={User}
               name="last_name"
               value={formData.last_name}
@@ -204,12 +204,12 @@ const Akun = () => {
               className={!isEditing ? "bg-white text-gray-800" : "bg-white"}
             />
           </div>
-          
-          {/* Action Buttons */}
+
+          {/* BUTTON AKSI PROFILE */}
           <div className="space-y-4 pt-2">
             {!isEditing ? (
               <>
-                <button 
+                <button
                   type="button"
                   onClick={() => setIsEditing(true)}
                   className="w-full py-3 px-4 bg-[#f42619] hover:bg-red-600 text-white font-semibold rounded transition-colors disabled:opacity-70"
@@ -217,7 +217,7 @@ const Akun = () => {
                 >
                   Edit Profil
                 </button>
-                <button 
+                <button
                   type="button"
                   onClick={() => setShowLogoutConfirm(true)}
                   className="w-full py-3 px-4 bg-white border-2 border-[#f42619] text-[#f42619] hover:bg-red-50 font-semibold rounded transition-colors disabled:opacity-70"
@@ -228,7 +228,7 @@ const Akun = () => {
               </>
             ) : (
               <>
-                <button 
+                <button
                   type="button"
                   onClick={handleSaveProfile}
                   className="w-full py-3 px-4 bg-[#f42619] hover:bg-red-600 text-white font-semibold rounded transition-colors disabled:opacity-70"
@@ -236,11 +236,11 @@ const Akun = () => {
                 >
                   {loadingProfile ? 'Menyimpan...' : 'Simpan'}
                 </button>
-                <button 
+                <button
                   type="button"
                   onClick={() => {
                     setIsEditing(false);
-                    // Reset fields back to original profile
+                    // Reset profile ketika sudah di edit maka memanggil ulang response 
                     if (profile) {
                       setFormData({
                         email: profile.email || '',
@@ -260,17 +260,17 @@ const Akun = () => {
         </div>
       </div>
 
-      {/* RESULT MODAL */}
+      {/* MODAL NOTIFIKASI */}
       {showResult && (
-        <NotificationModal 
-          isSuccess={isSuccess} 
-          message={resultText} 
-          onClose={() => setShowResult(false)} 
+        <NotificationModal
+          isSuccess={isSuccess}
+          message={resultText}
+          onClose={() => setShowResult(false)}
           buttonText="Tutup"
         />
       )}
 
-      {/* LOGOUT CONFIRMATION MODAL */}
+      {/* MODAL KONFIRMASI KETIKA AKAN LOGOUT */}
       {showLogoutConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 animate-fade-in">
           <div className="bg-white rounded-lg p-8 w-full max-w-sm flex flex-col items-center shadow-xl animate-pop-in">
@@ -298,7 +298,7 @@ const Akun = () => {
         </div>
       )}
 
-      {/* LOADING OVERLAY FOR LOGOUT */}
+      {/* OVERLAY LOADING KETIKA AKAN LOGOUT */}
       {isLoggingOut && (
         <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm animate-fade-in">
           <div className="w-12 h-12 border-4 border-gray-200 border-t-[#f42619] rounded-full animate-spin mb-4"></div>

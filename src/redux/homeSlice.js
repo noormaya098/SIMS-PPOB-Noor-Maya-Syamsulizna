@@ -1,78 +1,47 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'https://take-home-test-api.nutech-integrasi.com';
-
-const getAuthHeaders = (thunkAPI) => {
-  const token = thunkAPI.getState().auth.token;
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  };
-};
-
-const getAuthHeadersMultipart = (thunkAPI) => {
-  const token = thunkAPI.getState().auth.token;
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data'
-    }
-  };
-};
+import api from '../utils/api';
 
 export const fetchProfile = createAsyncThunk('home/fetchProfile', async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${API_URL}/profile`, getAuthHeaders(thunkAPI));
+    const response = await api.get('/profile');
     return response.data.data;
   } catch (error) {
-    if (error.response?.status === 401) {
-      thunkAPI.dispatch({ type: 'auth/logout' });
-    }
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
 
 export const updateProfile = createAsyncThunk('home/updateProfile', async (profileData, thunkAPI) => {
   try {
-    const response = await axios.put(`${API_URL}/profile/update`, profileData, getAuthHeaders(thunkAPI));
+    const response = await api.put('/profile/update', profileData);
     return response.data; // { status, message, data: { ... } }
   } catch (error) {
-    if (error.response?.status === 401) {
-      thunkAPI.dispatch({ type: 'auth/logout' });
-    }
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
 
 export const updateProfileImage = createAsyncThunk('home/updateProfileImage', async (formData, thunkAPI) => {
   try {
-    const response = await axios.put(`${API_URL}/profile/image`, formData, getAuthHeadersMultipart(thunkAPI));
+    const response = await api.put('/profile/image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
   } catch (error) {
-    if (error.response?.status === 401) {
-      thunkAPI.dispatch({ type: 'auth/logout' });
-    }
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
 
 export const fetchBalance = createAsyncThunk('home/fetchBalance', async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${API_URL}/balance`, getAuthHeaders(thunkAPI));
-    return response.data.data; // usually { balance: 0 }
+    const response = await api.get('/balance');
+    return response.data.data;
   } catch (error) {
-    if (error.response?.status === 401) {
-      thunkAPI.dispatch({ type: 'auth/logout' });
-    }
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
 
 export const fetchServices = createAsyncThunk('home/fetchServices', async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${API_URL}/services`, getAuthHeaders(thunkAPI));
+    const response = await api.get('/services');
     return response.data.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -81,7 +50,7 @@ export const fetchServices = createAsyncThunk('home/fetchServices', async (_, th
 
 export const fetchBanners = createAsyncThunk('home/fetchBanners', async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${API_URL}/banner`, getAuthHeaders(thunkAPI));
+    const response = await api.get('/banner');
     return response.data.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -90,47 +59,27 @@ export const fetchBanners = createAsyncThunk('home/fetchBanners', async (_, thun
 
 export const postTopUp = createAsyncThunk('home/postTopUp', async (amount, thunkAPI) => {
   try {
-    const response = await axios.post(
-      `${API_URL}/topup`,
-      { top_up_amount: amount },
-      getAuthHeaders(thunkAPI)
-    );
-    return response.data.data; // { balance: ... }
+    const response = await api.post('/topup', { top_up_amount: amount });
+    return response.data.data;
   } catch (error) {
-    if (error.response?.status === 401) {
-      thunkAPI.dispatch({ type: 'auth/logout' });
-    }
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
 
 export const postTransaction = createAsyncThunk('home/postTransaction', async (service_code, thunkAPI) => {
   try {
-    const response = await axios.post(
-      `${API_URL}/transaction`,
-      { service_code },
-      getAuthHeaders(thunkAPI)
-    );
+    const response = await api.post('/transaction', { service_code });
     return response.data.data;
   } catch (error) {
-    if (error.response?.status === 401) {
-      thunkAPI.dispatch({ type: 'auth/logout' });
-    }
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
 
 export const fetchHistory = createAsyncThunk('home/fetchHistory', async ({ offset, limit }, thunkAPI) => {
   try {
-    const response = await axios.get(
-      `${API_URL}/transaction/history?offset=${offset}&limit=${limit}`,
-      getAuthHeaders(thunkAPI)
-    );
-    return response.data.data; // { offset, limit, records }
+    const response = await api.get(`/transaction/history?offset=${offset}&limit=${limit}`);
+    return response.data.data;
   } catch (error) {
-    if (error.response?.status === 401) {
-      thunkAPI.dispatch({ type: 'auth/logout' });
-    }
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });

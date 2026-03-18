@@ -19,10 +19,10 @@ const Navbar = () => {
         {/* LOGO */}
         <Link to="/home" className="flex items-center gap-3 group">
           <img src="/assets/Logo.png" alt="Logo" className="w-7 h-7 group-hover:scale-110 transition-transform" />
-          <span className="text-xl font-bold tracking-tight text-[#333333]">SIMS PPOB </span>
+          <span className="text-xl font-bold tracking-tight text-[#333333]">SIMS PPOB</span>
         </Link>
 
-        {/* DESKTOP NAVIGATION LINKS */}
+        {/* DESKTOP NAVIGASI LINK*/}
         <div className="hidden md:flex items-center gap-12 font-semibold">
           {navLinks.map((link) => (
             <NavLink
@@ -38,7 +38,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* MOBILE BURGER MENU BUTTON */}
+        {/* BURGER MENU UNTUK MOBILE */}
         <div className="md:hidden flex items-center">
           <button
             onClick={toggleMenu}
@@ -50,7 +50,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* MOBILE NAVIGATION MENU */}
+      {/* MOBILE NAVIGASI MENU */}
       <div
         className={`md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-xl transition-all duration-300 ease-out z-40 ${isOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-4 invisible'
           }`}

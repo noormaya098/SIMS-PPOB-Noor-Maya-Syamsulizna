@@ -1,13 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'https://take-home-test-api.nutech-integrasi.com';
+import api from '../utils/api';
 
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/registration`, userData);
+      const response = await api.post('/registration', userData);
       return response.data;
     } catch (error) {
       if (error.response && error.response.data) {
@@ -22,7 +20,7 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/login`, userData);
+      const response = await api.post('/login', userData);
       // Save token to localStorage
       if (response.data.data && response.data.data.token) {
         localStorage.setItem('token', response.data.data.token);

@@ -24,13 +24,13 @@ const Home = () => {
       return;
     }
 
-    // Fetch all data
+    // Fetch semua data, yakni ada profile, balance atau saldo, services atau layanan, dan banners atau banner
     dispatch(fetchProfile());
     dispatch(fetchBalance());
     dispatch(fetchServices());
     dispatch(fetchBanners());
 
-    // Berikan delay sedikit agar transisi terasa halus
+    // Memberikan delay atau loading agar terlihat lebih hidup
     const timer = setTimeout(() => {
       setIsInitialLoading(false);
     }, 1000);
@@ -53,16 +53,16 @@ const Home = () => {
 
       <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 mt-8">
 
-        {/* TOP SECTION: PROFILE & BALANCE */}
+        {/* BAGIAN ATAS: PROFILE & SALDO */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
           <ProfileSection profile={profile} loadingProfile={loadingProfile} />
           <BalanceSection balance={balance} loadingBalance={loadingBalance} />
         </div>
 
-        {/* SERVICES GRID */}
+        {/* SECTION KATEGORI LAYANAN */}
         <ServicesSection services={services} loadingServices={loadingServices} />
 
-        {/* BANNERS SLIDER */}
+        {/* SECTION BANNER */}
         <BannersSection banners={banners} loadingBanners={loadingBanners} />
 
       </main>
